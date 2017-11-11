@@ -1,63 +1,64 @@
-(function () {
-  var data = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+var width = 960,
+    height = 500,
+    radius = Math.min(width, height) / 2;
 
-  //d3.select("body").selectAll("div")
-  //    .data(data)
-  //    .enter()
-  //    .append("div")
-  //    .attr("class", "bar")
-  //    .style("height", function (d) {
-  //      return d + "px";
-  //    })
-  //    .style("width", function (d) {
-  //      return "20px";
-  //    })
-  //    .append("text")
-
-  var w = 400,
-      h = 110;
-
-  var svg = d3.select("#chart")
-      .append("svg")
-      .attr("width", w)
-      .attr("height", h);
+var color = d3.scaleOrdinal()
+    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
 
-  svg.selectAll("rect")
-      .data(data)
-      .enter()
-      .append("rect")
-      .attr("x", function(d, i) {
-        return i * (w / data.length)
-      })
-      .attr("y", function(d) {
-        return h - d;
-      })
-      .attr("width", w / data.length - 1)
-      .attr("height", function(d) {
-        return d;
-      })
-      .attr("fill", function(d) {
-        return "hotpink";
-      });
+var percentageFormat = d3.format("%");
 
-  svg.selectAll("text")
-      .data(data)
-      .enter()
-      .append("text")
+var arc = d3.arc()
+    .outerRadius(radius - 10)
+    .innerRadius(0);
+
+var labelArc = d3.arc()
+    .outerRadius(radius - 40)
+    .innerRadius(radius - 40);
+
+var pie = d3.pie()
+    .sort(null)
+    .value(function(d) { return d.value; });
+
+var svg = d3.select("#chart")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+d3.csv("../data/Titanic.csv", function(error, csv_data) {
+  if (error) throw error;
+ 
+  var data = d3.nest()
+              .key(function(d) {
+                  return d.Pclass;
+              })
+              .rollup(function(d) {
+                  return d.length;
+              }).entries(csv_data);
+
+          data.forEach(function(d) {
+              d.percentage = d.value  / csv_data.length;
+          });
+
+
+  console.log(pie(data))
+
+  var g = svg.selectAll(".arc")
+      .data(pie(data))
+      .enter().append("g")
+      .attr("class", "arc");
+
+  g.append("path")
+      .attr("d", arc)
+      .style("fill", function(d, i) { return color(i); });
+
+  g.append("text")
+      .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+      .attr("dy", ".35em")
       .text(function(d) {
-        return d;
-      })
-      .attr("x", function(d, i) {
-        return i * (w / data.length) + (w / data.length) / 2;
-      })
-      .attr("y", function(d) {
-        return h - d + 10;
-      })
-      .attr("font-family", "sans-serif")
-      .attr("font-size", "11px")
-      .attr("fill", "black")
-      .attr("text-anchor", "middle");
-
-
-})();
+                  console.log("d is", d);
+                    return "Class " + d.data.key + " : " + percentageFormat(d.data.percentage);
+                });
+});
