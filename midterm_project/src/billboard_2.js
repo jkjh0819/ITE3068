@@ -1,10 +1,41 @@
 var chart = bb.generate({
-    bindto: "#chart",
-    data: {
-        type: "bar",
-        columns: [
-            ["data1", 30, 200, 100, 170, 150, 250],
-            ["data2", 130, 100, 140, 35, 110, 50]
-        ]
+    "data": {
+    "columns": [
+            ["male",364,66,38],
+            ["female",63,9,9],
+    ],
+    "type": "bar",
+    "groups": [
+      [
+        "male",
+        "female"
+      ]
+    ]
+  },
+  "grid": {
+    "y": {
+      "lines": [
+        {
+          "value": 0
+        }
+      ]
     }
+  },
+
+  "axis": {
+    "x": {
+      "type": "category",
+      "categories": [
+        "Southampton",
+        "Cherbourg",
+        "Queenstown",
+      ]
+    }
+  },
+
+  "legend": {
+    "position": "right"
+  },
+
+  "bindto": "#chart"
 });
