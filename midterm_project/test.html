@@ -1,0 +1,28 @@
+<body>
+  <head>
+    <title>billboard</title>
+    <script src="./d3/d3.min.js"></script>
+    <link rel="stylesheet" href="./billboard/billboard.css">
+    <script src = "./billboard/billboard.js"></script>
+  </head>
+  <body>
+    <div id="chart"></div>
+  </body>
+</body>
+<script>
+var chart = bb.generate({
+  "data": {
+    "xs": {
+      "male": "x1",
+      "female": "x2"
+    },
+    "columns": [
+  ["x1", 0, 10, 20, 30, 40, 50, 60, 70, 80],
+  ["x2", 0, 10, 20, 30, 40, 50, 60],
+  ["male", 41, 88, 83, 79, 79, 87, 87, 100, 0],
+  ["female", 37, 24, 28, 17, 31, 11, 0]
+    ]
+  },
+  "bindto": "#chart"
+});
+</script>
