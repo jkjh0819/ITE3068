@@ -3,8 +3,8 @@
 # based image
 FROM ubuntu:12.04
 
-LABEL maintainer1 = "jkjh0816@naver.com" \
-      maintainer2 = "camelia0858@gmail.com"
+LABEL maintainer1 = "2015004257" \
+      maintainer2 = "2015004120"
 
 # environment for arcus
 RUN   apt-get update
