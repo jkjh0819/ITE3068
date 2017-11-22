@@ -8,7 +8,7 @@ LABEL maintainer1 = "2015004257" \
 
 # environment for arcus
 RUN   apt-get update
-RUN   apt-get install -y build-essential autoconf git openjdk-7-jre \
+RUN   apt-get install -y build-essential autoconf git openjdk-7-jdk \
       automake libtool libcppunit-dev python-setuptools python-dev curl tar 
 
 # clone arcus from repository
