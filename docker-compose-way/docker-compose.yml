@@ -1,0 +1,27 @@
+version: '3'
+services:
+  redis:
+    image: "redis:alpine"
+  db:
+    image: "mysql:5.7"
+    container_name: mysql-5.7
+    volumes:
+      - "db-data:/var/lib/mysql"
+      - "./init/:/docker-entrypoint-initdb.d"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "team6"
+      MYSQL_USER: "team6"
+      MYSQL_PASSWORD: "team6"
+    ports:
+      - "3306:3306"
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - 8080:8080
+
+volumes:
+  db-data:
