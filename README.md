@@ -1,3 +1,5 @@
+# 현재까지 진행 상황
+
 docker-compose-way내에 있는 docker-compose.yml에 이미지를 지정하면 알아서 다운로드 받고 연결해 준다고 함.
 
 현재 mysql, mysql 도우미인 adminer, redis 이미지가 다운받아져서 연결되어 있는 상태
@@ -11,7 +13,6 @@ docker-compose-way내에 있는 docker-compose.yml에 이미지를 지정하면 
 데이터 만드는 랜덤제너레이터는 결과적으로 import에 들어갈 SQL 쿼리문들 모여있는 파일이면 될거 같아요. 알아서 넣어주겠지!
 
 arcus 캐시 데이터는 key:value니까 내생각에는 id:name으로 집어넣으면 될 것 같아요. 명부같은거 조회할 때 쓴다하자ㅎㅎ
-
 
 # 요약
 12월 1일까지 arcus, nGrinder, Hubblemon, nBase-ARC, 우리가 만들 application image를 연동하는 docker-compose.yml 작성, 즉 이전에 선하가 진행했던 것에 이어서 환경 세팅(지혜)
