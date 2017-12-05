@@ -1,32 +1,36 @@
 # 현재까지 진행 상황
 
-docker-compose-way내에 있는 docker-compose.yml에 이미지를 지정하면 알아서 다운로드 받고 연결해 준다고 함.
+- docker-compose-way내에 있는 docker-compose.yml에 이미지를 지정 및 링크하여 사용
 
-현재 mysql, mysql 도우미인 adminer, redis 이미지가 다운받아져서 연결되어 있는 상태
+- adminer, mysql, ngrinder, nbase-ARC 이미지가 다운받아져서 연결되어 있는 상태
 
-12월 1일 중으로 arcus, ngrinder, hubblemon, nbase-arc 이미지들도 찾아서 연결하고 어플리케이션 실행방법 구상해서 업데이트 해줄게요.
+- mysql, ngrinder, adminer는 이전 docker hub에 존재했고, nbase-arc는 새로 빌드하여 docker hub에 업로드 해놓음. nbase-arc는 jkjh0819/ite3068:nbase-arc로 존재
 
-실행방법은 docker-compose-way 안에서 `docker-compose up -d --remove-orphans` 를 실행하면 container가 3개 생성돼요.
+- arcus docker file 제작까지 완료, 빌드만 하면 됨.
 
-`http://localhost:8080/?server=db&username=team6&db=team6&table=user` 로 접근하면 gui로 우리가 다룰 user table이 나옵니다(description도 함께). 좌측에 있는 import에 sql 쿼리 뭉텅이 파일로 임포트하면 알아서 실행시켜서 데이터 넣어줄거 같아요. SQL command에서 테스트도 가능!
+# 실행방법
 
-데이터 만드는 랜덤제너레이터는 결과적으로 import에 들어갈 SQL 쿼리문들 모여있는 파일이면 될거 같아요. 알아서 넣어주겠지!
+0. 각각 사용될 이미지를 미리 docker hub에 업로드 해두어야 함. 
 
-arcus 캐시 데이터는 key:value니까 내생각에는 id:name으로 집어넣으면 될 것 같아요. 명부같은거 조회할 때 쓴다하자ㅎㅎ
+1. `docker-compose up -d --remove-orphans` 로 docker-compose.yml 을 빌드
 
-12/3 : 
-테스트 때문에 계속 mysql 날리고 있어서 데이터는 제너레이터만 만들어주세요.
-arcus, hubblemon은 오픈소스 이미지 쓰려고 했는데 뭐가 문제인지 잘 안되고 있어요. 확인하고 화요일 이후에 다시해볼게요.
-hubblemon은 naver github clone하면 Dockerfile이 있고 `docker build -t team6/hubblemon .` 실행했는데 에러 떠요 한번 확인해주세요.
-arcus 이미지는 이전에 했던거 가져다 쓰면 되겠지?
+2. `http://localhost:8080/?server=db&username=team6&db=team6&table=user` 를 통해 mysql에 접근할 수 있고(adminer 이용), 데이터 제너레이터로 샘플 데이터를 집어 넣을 수 있음. 다만, 실행시 이전 데이터에 의한 종속성을 날리기 위해 DB를 초기화하므로, 데이터 제너레이터는 SQL file을 생성함.
 
-1. nbase-arc 폴더 내에서 `docker build -t team6/nbase-arc .` -> nbase-arc 이미지 생성 -> jkjh0819/ite3068:nbase-arc에 이미지 있어요
+3. nGrinder는 `http://localhost:8999` 로 접근 가능, 아이디, 비밀번호는 default인 admin/admin으로 설정되어 있음. 
 
-2. nGrinder는 연동 완료, 아이디 비밀번호 현재 default인 admin/admin입니다. localhost:8999
+# 이슈
 
-# 요약
-12월 1일까지 arcus, nGrinder, Hubblemon, nBase-ARC, 우리가 만들 application image를 연동하는 docker-compose.yml 작성, 즉 이전에 선하가 진행했던 것에 이어서 환경 세팅(지혜)
+- Hubblemon 레포 내에 있는 Dockerfile로 이미지 빌드가 안됨. 관련 사항 다른 팀과 공유 -> 다른 팀에서 풀 리퀘를 날리고 머지됨..ㅠㅠ, 장고 버전 업데이트에 따른 requirements.txt에 1.10 버전 이상을 다운받도록 되어있어 이 부분이 수정됨.
 
-시간 되는 대로 mysql 에 있는 team6.user에 들어갈 데이터 SQL파일로 뽑아내는 제너레이터 만들기(선하)
+# 이후 일정
 
-추가적으로 할 것 있으면 issue나 README.md에 넣어주세요.
+12/6 : Arcus 도커 파일 빌드 및 업로드, docker-compose에 내용 추가, 테스트용 어플리케이션 개발하여 Dockerfile로 빌드하도록 함.
+
+12/8 : Arcus 미사용 / 사용 성능 nGrinder 스트레스 테스트를 통해 비교, 더불어 연결된 Hubblemon으로 모니터링
+
+12/10 : nbase-ARC를 사용하여 샘플 프로젝트 구현 후 다른 저장 플랫폼과 성능비교
+
+12/12 : 멀티노드로 구성하여 단일노드일 때와 성능비교
+
+12/14 : 보고서 작성(위키)
+
