@@ -16,34 +16,35 @@ arcus = memcache.Client(["127.0.0.1:11211","127.0.0.1:11212"])
 def main():
     return 'team6'
 
-@app.route('/mysql', methods=['GET'])
+@app.route('/mysql')
 def mysql_():
-    query = 'select * from user where id=\"%s\"'%request.args.get('id')
+    target = str(random.randint(0,30000)+1)
+    query = 'select * from user where id=\"%s\"'%target
     cursor.execute(query)
     res = cursor.fetchone()
     return str(res)
 
-@app.route('/arcus', methods=['GET'])
+@app.route('/arcus')
 def arcus_():
-    target = request.args.get('id')
+    target = str(random.randint(0,30000)+1)
     res = arcus.get(target)
     if res:
         return 'Cache Hit: '+str(res)
     else:
-        query = 'select * from user where id=\"%s\"'%request.args.get('id')
+        query = 'select * from user where id=\"%s\"'%target
         cursor.execute(query)
         res = cursor.fetchone()
         arcus.set(str(target),res)
         return 'Cache Miss: '+str(res)
 
-@app.route('/nbase', methods=['GET'])
+@app.route('/nbase')
 def nbase_():
-    target = request.args.get('id')
+    target = str(random.randint(0,30000)+1)
     res = nbase.get(target)
     if res:
         return 'Cache Hit: '+str(res)
     else:
-        query = 'select * from user where id=\"%s\"'%request.args.get('id')
+        query = 'select * from user where id=\"%s\"'%target
         cursor.execute(query)
         res = cursor.fetchone()
         nbase.set(target,res)
