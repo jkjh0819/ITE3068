@@ -9,7 +9,7 @@ app = Flask(__name__)
 db = MySQLdb.Connect(host='127.0.0.1', port=3306, user='team6', passwd='team6', db='team6')
 cursor = db.cursor()
 nbase = redis.StrictRedis(port=6000)
-arcus = memcache.Client(["127.0.0.1:11211"])
+arcus = memcache.Client(["127.0.0.1:11211","127.0.0.1:11212"])
 
 
 @app.route('/')
@@ -33,7 +33,7 @@ def arcus_():
         query = 'select * from user where id=\"%s\"'%request.args.get('id')
         cursor.execute(query)
         res = cursor.fetchone()
-        arcus.set(str(target),res[1])
+        arcus.set(str(target),res)
         return 'Cache Miss: '+str(res)
 
 @app.route('/nbase', methods=['GET'])
@@ -46,7 +46,7 @@ def nbase_():
         query = 'select * from user where id=\"%s\"'%request.args.get('id')
         cursor.execute(query)
         res = cursor.fetchone()
-        nbase.set(target,res[1])
+        nbase.set(target,res)
         return 'Cache Miss: '+str(res)
 
 if __name__ == '__main__':
