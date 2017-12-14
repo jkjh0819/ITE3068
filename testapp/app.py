@@ -18,7 +18,7 @@ def main():
 
 @app.route('/mysql')
 def mysql_():
-    target = str(random.randint(0,10)+1)
+    target = str(random.randint(0,3000)+1)
     query = 'select * from user where id=\"%s\"'%target
     cursor.execute(query)
     res = cursor.fetchone()
@@ -26,7 +26,7 @@ def mysql_():
 
 @app.route('/arcus')
 def arcus_():
-    target = str(random.randint(0,10)+1)
+    target = str(random.randint(0,3000)+1)
     res = arcus.get(target)
     if res:
         return 'Cache Hit: '+str(res)
@@ -39,7 +39,7 @@ def arcus_():
 
 @app.route('/nbase')
 def nbase_():
-    target = str(random.randint(0,10)+1)
+    target = str(random.randint(0,3000)+1)
     res = nbase.get(target)
     if res:
         return 'Cache Hit: '+str(res)
