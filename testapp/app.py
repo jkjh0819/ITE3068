@@ -17,6 +17,15 @@ MAX_RANGE=3000
 def main():
     return 'team6'
 
+@app.route('/init')
+def init_():
+    for i in range(30000):
+        query = 'select * from user where id=\"%s\"'%(i+1)
+        cursor.execute(query)
+        res = cursor.fetchone()
+        nbase.set(i+1,res)
+    return "IMPORT SUCCEED"
+
 @app.route('/mysql')
 def mysql_():
     target = str(random.randint(0,MAX_RANGE)+1)
