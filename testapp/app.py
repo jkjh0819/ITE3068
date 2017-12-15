@@ -11,6 +11,7 @@ cursor = db.cursor()
 nbase = redis.StrictRedis(port=6000)
 arcus = memcache.Client(["127.0.0.1:11211","127.0.0.1:11212"])
 
+MAX_RANGE=3000
 
 @app.route('/')
 def main():
@@ -18,7 +19,7 @@ def main():
 
 @app.route('/mysql')
 def mysql_():
-    target = str(random.randint(0,3000)+1)
+    target = str(random.randint(0,MAX_RANGE)+1)
     query = 'select * from user where id=\"%s\"'%target
     cursor.execute(query)
     res = cursor.fetchone()
@@ -26,7 +27,7 @@ def mysql_():
 
 @app.route('/arcus')
 def arcus_():
-    target = str(random.randint(0,3000)+1)
+    target = str(random.randint(0,MAX_RANGE)+1)
     res = arcus.get(target)
     if res:
         return 'Cache Hit: '+str(res)
@@ -39,7 +40,7 @@ def arcus_():
 
 @app.route('/nbase')
 def nbase_():
-    target = str(random.randint(0,3000)+1)
+    target = str(random.randint(0,MAX_RANGE)+1)
     res = nbase.get(target)
     if res:
         return 'Cache Hit: '+str(res)
