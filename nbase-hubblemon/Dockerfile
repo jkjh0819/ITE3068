@@ -1,19 +1,10 @@
-FROM python:3.4
+FROM hyeongseok05/nbase-arc
 
-expose 4257
+COPY ./ /hubblemon
 
-RUN apt-get update && apt-get install -y --no-install-recommends librrd-dev net-tools \
-        && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y python3-pip python-pip python3 python librrd-dev  libpython3-dev libpython-dev git net-tools
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-
-COPY requirements.txt /usr/src/app/
-RUN pip install --no-cache-dir -r requirements.txt
-ADD . /usr/src/app
-
-RUN python manage.py migrate
-
-RUN pip install --no-cache-dir honcho
-CMD ["honcho", "start"]
-
+RUN pip3 install psutil rrdtool
+WORKDIR /hubblemon
+RUN pip3 install -r requirements.txt
+WORKDIR /
