@@ -67,9 +67,7 @@ chart_resolution = 400
 #
 main_link = [   
             ('arcus_stat', '/chart?type=arcus_stat'),
-            ('arcus_prefix', '/chart?type=arcus_prefix'),
-            ('arcus_list', '/addon?type=arcus_list'),
-            ('arcus_query', '/query?type=arcus_query') ]
+            ('arcus_list', '/addon?type=arcus_list') ]
 
 # arcus_zk_addrs = []
 # arcus_zk_addrs.append("172.20.0.3:11211")
